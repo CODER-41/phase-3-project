@@ -12,3 +12,6 @@ sessionLocal = sessionmaker(autocommit = False, autoflush = False, bind = engine
 def init_db():
     Base.metadata.create_all(bind=engine)
     print("Database initialized successfully")
+
+def get_session():
+    return sessionLocal()
