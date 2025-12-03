@@ -77,3 +77,33 @@ class Workout(Base):
             total_volume += we.calculate_volume()
 
         return total_volume
+    
+class Exercise(Base):
+
+    __tablename__ = 'exercises'
+
+    id = Column(Integer, primary_key = True)
+
+    name = Column(String(100), nullable=False, unique=True)
+    muscle_group = Column(String(50), nullable=False)
+    equipment_needed = Column(String(100), nullable = True)
+    description = Column(Text, nullable=True)
+    is_custom = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.now)
+
+    workout_exercies = relationship('WorkoutExercise', back_populates='exercise')
+
+    def __repr__(self):
+
+        return f"<Exercise(id={self.id}, name='{self.name}', muscle_group = 'self.muscle_group')>"
+    
+
+    @classmethod
+    def search_by_name(cls, session, search_term):
+
+        return session.query(cls).filter(
+            cls.name.ilike(f"%{search_term}%")
+        ).all()
+
+    
+
