@@ -115,3 +115,42 @@ class Exercise(Base):
     def get_usage_count(self):
         return len(self.workkout_exercises)
 
+
+class WorkoutExercise(Base):
+
+    __tablename__ = 'workout_exercises'
+
+    id = Column(Integer, ForeignKey('workouts.id'), nullable=False)
+    exercise_id = Column(Integer, ForeignKey('exercise.id'), nullable = False)
+
+    sets = Column(Integer, nullable=False)
+    reps = Column(Integer, nullable = False)
+    weight = Column(Float, nullable=False)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.now)
+
+
+    workout = relationship('Workout', bacl_populates='workout_exercises')
+    exercise = relationship('Exercise', back_populates='workout_exercises')
+
+    def __repr__(self):
+        return f"<WorkoutExercise(id={self.id}, exercise='{self.get_exercise_name()}' {self.sets}x{self.reps}@{self.weight}lbs)>"
+    
+
+    def calculate_volume(self):
+        return self.sets * self.reps * self.weight
+    
+    def get_exercise_name(self):
+        return self.exercise.name if self.exercise else "Uknown"
+
+
+
+
+
+
+
+
+
+
+
+
