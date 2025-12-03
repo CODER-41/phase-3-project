@@ -112,4 +112,6 @@ class Exercise(Base):
             cls.muscle_group == muscle_group
         ).all()
     
+    def get_usage_count(self):
+        return len(self.workkout_exercises)
 
