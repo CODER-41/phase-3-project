@@ -126,69 +126,49 @@ def user_management_menu(session):
         else:
             print("Invalid choice. Please try again.")
 
-# ============================================================================
-# WORKOUT LOGGING FUNCTIONS
-# ============================================================================
 
 def log_workout(session):
-    """
-    Log a new workout session with exercises.
-    This is the main feature of the app - allows users to record their workouts.
-    
-    Process:
-        1. Get workout date and notes
-        2. Create workout record
-        3. Loop to add multiple exercises
-        4. Save everything to database
-    
-    Args:
-        session: SQLAlchemy session
-    """
-    # Check if user is logged in
+   
     if not current_user:
-        print("\n✗ Please select or create a user first!")
+        print("\n Please select or create a user first!")
         return
     
     print_subheader(f"Log New Workout - {current_user.name}")
-    
-    # Get workout date
+
     print("\n  Enter workout date (YYYY-MM-DD or 'today'):")
     workout_date = get_valid_date("  Date: ")
     
-    # Optional notes
     notes = input("\n  Workout notes (optional, press Enter to skip): ").strip()
     notes = notes if notes else None
     
-    # Create workout object using ORM
+
     workout = Workout(
-        user=current_user,  # Relationship automatically handled
+        user=current_user,  
         workout_date=workout_date,
         notes=notes
     )
     session.add(workout)
     
-    print(f"\n✓ Workout session created for {workout_date}")
+    print(f"\n Workout session created for {workout_date}")
     print("\n  Now let's add exercises to this workout...")
-    
-    # Loop to add multiple exercises
+
     while True:
         print("\n" + "-"*60)
         print("  Add Exercise")
         print("-"*60)
         
-        # Search for exercise
+    
         search_term = input("\n  Search exercise by name (or 'cancel' to finish): ").strip()
         
         if search_term.lower() == 'cancel':
             break
         
-        # Search database for matching exercises (demonstrates query)
         exercises = Exercise.search_by_name(session, search_term)
         
         if not exercises:
             print(f"\n  No exercises found matching '{search_term}'")
             
-            # Offer to browse by muscle group
+            
             if confirm_action("Would you like to browse by muscle group?"):
                 exercise = browse_exercises_by_muscle_group(session)
                 if not exercise:
@@ -196,16 +176,14 @@ def log_workout(session):
             else:
                 continue
         else:
-            # Display found exercises (demonstrates list usage)
+    
             display_exercise_list(exercises)
-            
-            # Let user select one
+    
             exercise = get_exercise_choice(session, exercises)
             
             if not exercise:
                 continue
-        
-        # Get exercise details (sets, reps, weight)
+    
         print(f"\n  Adding: {exercise.name}")
         sets = get_valid_integer("  Sets: ", min_value=1)
         reps = get_valid_integer("  Reps: ", min_value=1)
