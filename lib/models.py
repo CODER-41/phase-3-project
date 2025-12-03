@@ -55,3 +55,25 @@ class Workout(Base):
     
 
     def add_exercise(self, exercise, sets, reps, weight, notes=None):
+
+        workout_exercise = WorkoutExercise(
+            workout=self,
+            exercise=exercise,
+            sets=sets,
+            reps=reps,
+            weight=weight,
+            notes=notes
+        )
+        return workout_exercise
+    
+    def get_all_exercises(self):
+
+        return self.workout_exercises
+    
+    def get_total_volume(self):
+
+        total_volume = 0
+        for we in self.workout_exercises:
+            total_volume += we.calculate_volume()
+
+        return total_volume
