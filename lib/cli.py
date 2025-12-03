@@ -92,29 +92,21 @@ def switch_user(session):
         print("  Cancelled.")
         return
     
-    # Set selected user as current user (global variable)
     global current_user
     current_user = users[choice - 1]
-    print(f"\n✓ Switched to user: {current_user.name}")
+    print(f"\n Switched to user: {current_user.name}")
 
 def user_management_menu(session):
-    """
-    Display user management submenu.
-    Allows creating, viewing, and switching users.
-    
-    Args:
-        session: SQLAlchemy session
-    """
+
     while True:
         print_subheader("User Management")
         
-        # Display current user status
+        
         if current_user:
             print(f"\n  Current User: {current_user.name}")
         else:
             print("\n  No user selected")
         
-        # Menu options
         print("\n  1. Create New User")
         print("  2. List All Users")
         print("  3. Switch User")
@@ -122,7 +114,6 @@ def user_management_menu(session):
         
         choice = input("\n  Enter choice: ").strip()
         
-        # Handle menu selection
         if choice == '1':
             create_user(session)
         elif choice == '2':
@@ -133,7 +124,7 @@ def user_management_menu(session):
         elif choice == '0':
             break
         else:
-            print("✗ Invalid choice. Please try again.")
+            print("Invalid choice. Please try again.")
 
 # ============================================================================
 # WORKOUT LOGGING FUNCTIONS
