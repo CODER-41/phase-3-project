@@ -243,44 +243,31 @@ def browse_exercises_by_muscle_group(session):
         print(f"\n  No exercises found for {selected_muscle_group}")
         return None
     
-    # Display and let user select
+
     display_exercise_list(exercises)
     return get_exercise_choice(session, exercises)
 
-# ============================================================================
-# WORKOUT HISTORY FUNCTIONS
-# ============================================================================
-
 def view_workout_history(session):
-    """
-    Display workout history for current user.
-    Shows all past workouts with details.
-    
-    Args:
-        session: SQLAlchemy session
-    """
-    # Check if user is logged in
+
     if not current_user:
-        print("\n✗ Please select or create a user first!")
+        print("\n Please select or create a user first!")
         return
     
     print_subheader(f"Workout History - {current_user.name}")
     
-    # Get all workouts for current user (using ORM relationship)
+    
     workouts = current_user.get_all_workouts()
     
     if not workouts:
         print("\n  No workouts logged yet. Start logging workouts!")
         return
     
-    # Sort workouts by date (most recent first)
-    # Demonstrates list operations with lambda function
+
     sorted_workouts = sorted(workouts, key=lambda w: w.workout_date, reverse=True)
     
     print(f"\n  Total Workouts: {len(sorted_workouts)}")
     print(f"  Total Exercises Logged: {current_user.get_total_exercises_logged()}")
-    
-    # Display each workout
+
     for idx, workout in enumerate(sorted_workouts, 1):
         print("\n" + "="*60)
         print(f"  WORKOUT #{idx}")
