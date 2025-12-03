@@ -280,28 +280,19 @@ def view_workout_history(session):
     input("\n  Press Enter to continue...")
 
 def view_exercise_history(session):
-    """
-    View history for a specific exercise.
-    Shows all sessions where user performed that exercise.
-    
-    Args:
-        session: SQLAlchemy session
-    """
-    # Check if user is logged in
+   
     if not current_user:
-        print("\n✗ Please select or create a user first!")
+        print("\n Please select or create a user first!")
         return
     
     print_subheader(f"Exercise History - {current_user.name}")
-    
-    # Search for exercise
+
     search_term = input("\n  Search exercise by name: ").strip()
     
     if not search_term:
         print("✗ Search term cannot be empty.")
         return
-    
-    # Find matching exercises
+
     exercises = Exercise.search_by_name(session, search_term)
     
     if not exercises:
