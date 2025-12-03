@@ -105,5 +105,11 @@ class Exercise(Base):
             cls.name.ilike(f"%{search_term}%")
         ).all()
 
+    @classmethod
+    def filter_by_muscle_group(cls, session, muscle_group):
+
+        return session.query(cls).filter(
+            cls.muscle_group == muscle_group
+        ).all()
     
 
