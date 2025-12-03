@@ -32,3 +32,26 @@ class User(Base):
             total += len(workout.workout_exercises)
         
         return total
+    
+
+class Workout(Base):
+
+    __tablename__ = 'workouts'
+
+    id = Column(Integer, ForeignKey('users.id'), nullable=False)
+
+    workout_date = Column(Date, nullable=False)
+    duration = Column(Integer, nullable=True)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.now)
+
+
+    user = relationship('User', back_poulates='workouts')
+    workout_exercises = relationship('WorkoutExercise', back_populates='workout', cascade='all, delete-orphan')
+
+
+    def __repr__(self):
+        return f"<Workout(id={self.id}, user_id={self.user_id}, date={self.workout_date})>"
+    
+
+    def add_exercise(self, exercise, sets, reps, weight, notes=None):
