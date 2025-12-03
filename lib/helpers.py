@@ -69,10 +69,9 @@ def format_workout_summary(workout):
     
     for we in workout.workout_exercises:
         exercise_lines.append(
-            f"    • {we.get_exercise_name()}: {we.sets}x{we.reps} @ {we.weight}lbs"
+            f" {we.get_exercise_name()}: {we.sets}x{we.reps} @ {we.weight}lbs"
         )
     
-    # Join list items with newlines
     exercises_str = "\n".join(exercise_lines) if exercise_lines else "    (No exercises logged)"
     
     summary = f"""
@@ -84,19 +83,12 @@ def format_workout_summary(workout):
     return summary
 
 def display_exercise_list(exercises):
-    """
-    Display a formatted list of exercises.
-    
-    Args:
-        exercises (list): List of Exercise objects
-    """
     if not exercises:
         print("  No exercises found.")
         return
     
     print(f"\n  Found {len(exercises)} exercise(s):\n")
-    
-    # Use enumerate to display numbered list
+
     for idx, exercise in enumerate(exercises, 1):
         print(f"  {idx}. {exercise.name}")
         print(f"     Muscle Group: {exercise.muscle_group}")
@@ -106,16 +98,7 @@ def display_exercise_list(exercises):
         print()
 
 def get_exercise_choice(session, exercises):
-    """
-    Let user select an exercise from a list.
-    
-    Args:
-        session: SQLAlchemy session
-        exercises (list): List of Exercise objects to choose from
-        
-    Returns:
-        Exercise: Selected exercise object, or None if cancelled
-    """
+
     if not exercises:
         return None
     
@@ -130,20 +113,12 @@ def get_exercise_choice(session, exercises):
             if 0 <= idx < len(exercises):
                 return exercises[idx]
             else:
-                print(f"✗ Please enter a number between 1 and {len(exercises)}")
+                print(f"Please enter a number between 1 and {len(exercises)}")
         except ValueError:
             print("✗ Invalid input. Please enter a number.")
 
 def confirm_action(prompt="Are you sure?"):
-    """
-    Ask user to confirm an action.
-    
-    Args:
-        prompt (str): Confirmation prompt
-        
-    Returns:
-        bool: True if user confirms, False otherwise
-    """
+  
     response = input(f"\n  {prompt} (y/n): ").strip().lower()
     return response in ['y', 'yes']
 
