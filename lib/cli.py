@@ -9,3 +9,18 @@ from lib.helpers import (
     format_workout_summary, display_exercise_list,
     get_exercise_choice, confirm_action
 )
+
+current_user = None
+
+def create_user(session):
+
+    print_subheader("Create New User")
+
+    name = input("\n Enter your name: ").strip()
+    if not name:
+        print("x Name cannot be empty.")
+        return
+    
+    
+
+
