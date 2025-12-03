@@ -191,8 +191,7 @@ def log_workout(session):
         
         exercise_notes = input("  Notes (optional, press Enter to skip): ").strip()
         exercise_notes = exercise_notes if exercise_notes else None
-        
-        # Create WorkoutExercise entry (join table record)
+    
         workout_exercise = WorkoutExercise(
             workout=workout,
             exercise=exercise,
@@ -203,16 +202,15 @@ def log_workout(session):
         )
         session.add(workout_exercise)
         
-        print(f"\n✓ Added: {exercise.name} - {sets}x{reps} @ {weight}lbs")
+        print(f"\n Added: {exercise.name} - {sets}x{reps} @ {weight}lbs")
         
-        # Ask if user wants to add more exercises
+    
         if not confirm_action("Add another exercise?"):
             break
     
-    # Commit all changes to database (transaction)
     session.commit()
     
-    # Display workout summary
+
     print("\n" + "="*60)
     print("  WORKOUT SUMMARY")
     print("="*60)
@@ -220,17 +218,7 @@ def log_workout(session):
     print(f"\n✓ Workout logged successfully! (ID: {workout.id})")
 
 def browse_exercises_by_muscle_group(session):
-    """
-    Browse exercises by selecting a muscle group.
-    Alternative to searching by name.
-    
-    Args:
-        session: SQLAlchemy session
-        
-    Returns:
-        Exercise: Selected exercise, or None if cancelled
-    """
-    # Tuple of muscle groups (immutable - demonstrates tuple usage)
+  
     muscle_groups = ('Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Cardio')
     
     print("\n  Select Muscle Group:")
@@ -249,7 +237,6 @@ def browse_exercises_by_muscle_group(session):
     
     selected_muscle_group = muscle_groups[choice - 1]
     
-    # Get exercises for selected muscle group (filtered query)
     exercises = Exercise.filter_by_muscle_group(session, selected_muscle_group)
     
     if not exercises:
