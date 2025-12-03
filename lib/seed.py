@@ -84,3 +84,18 @@ def seed_exercises(session):
 
         session.commit()
         print(f"Seeded {total_exercise} exercises across {len(MUSCLE_GROUPS)} muscle groups")
+
+
+def seed_sample_user_custom_name(session):
+    custom_name = "Ronny Mboya"
+    custom_age = 43
+    custom_weight = 175.0
+    custom_goal = "Get stronger and build lean muscle"
+
+    existing_user = session.query(User).filter_by(name=custom_name).first()
+    if existing_user:
+        print(f"User '{custom_name}' already exists")
+        return
+    
+    print (f"creating sample user '{custom_name}' with demo workouts...")
+
