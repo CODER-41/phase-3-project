@@ -99,3 +99,153 @@ def seed_sample_user_custom_name(session):
     
     print (f"creating sample user '{custom_name}' with demo workouts...")
 
+
+
+    
+    demo_user = User(
+        name=custom_name,
+        age=custom_age,
+        weight=custom_weight,
+        fitness_goal=custom_goal
+    )
+    session.add(demo_user)
+    session.commit()
+    
+
+    bench_press = session.query(Exercise).filter_by(name="Bench Press").first()
+    squat = session.query(Exercise).filter_by(name="Squat").first()
+    deadlift = session.query(Exercise).filter_by(name="Deadlift").first()
+    
+    if not (bench_press and squat and deadlift):
+        print("! Could not create demo workouts - exercises not found")
+        return
+    
+   
+    workout1 = Workout(
+        user=demo_user,
+        workout_date=date.today() - timedelta(days=3),
+        notes="Great chest day! Felt really strong on bench press."
+    )
+    session.add(workout1)
+  
+    we1 = WorkoutExercise(
+        workout=workout1,
+        exercise=bench_press,
+        sets=3,
+        reps=10,
+        weight=135.0,
+        notes="Added 5 lbs from last session"
+    )
+    session.add(we1)
+  
+    workout2 = Workout(
+        user=demo_user,
+        workout_date=date.today() - timedelta(days=1),
+        notes="Leg day - tough but productive"
+    )
+    session.add(workout2)
+
+    we2 = WorkoutExercise(
+        workout=workout2,
+        exercise=squat,
+        sets=4,
+        reps=8,
+        weight=225.0,
+        notes="New PR!"
+    )
+    we3 = WorkoutExercise(
+        workout=workout2,
+        exercise=deadlift,
+        sets=3,
+        reps=5,
+        weight=275.0,
+        notes="Form felt solid"
+    )
+    session.add(we2)
+    session.add(we3)
+    
+    session.commit()
+    print(f" Created user '{demo_user.name}' with 2 sample workouts")
+
+
+def seed_multiple_demo_users(session):
+ 
+    demo_users_data = [
+        {
+            'name': 'Sarah Johnson',
+            'age': 24,
+            'weight': 140.0,
+            'goal': 'Lose weight and tone up'
+        },
+        {
+            'name': 'Mike Thompson',
+            'age': 35,
+            'weight': 200.0,
+            'goal': 'Build muscle mass'
+        },
+        {
+            'name': 'Omar Lisa',
+            'age': 29,
+            'weight': 130.0,
+            'goal': 'Improve overall fitness'
+        }
+    ]
+    
+    print(f"Creating {len(demo_users_data)} sample users...")
+    
+    for user_data in demo_users_data:
+
+        existing = session.query(User).filter_by(name=user_data['name']).first()
+        if existing:
+            print(f" User '{user_data['name']}' already exists")
+            continue
+        
+    
+        new_user = User(
+            name=user_data['name'],
+            age=user_data['age'],
+            weight=user_data['weight'],
+            fitness_goal=user_data['goal']
+        )
+        session.add(new_user)
+        print(f"  Created user: {user_data['name']}")
+    
+    session.commit()
+    print(f" Multiple demo users created successfully")
+
+def seed_no_demo_user(session):
+   
+    print(" Skipping demo user creation - database will be empty")
+    print("  Users can create their own accounts from the CLI")
+
+
+def seed_database():
+    
+    init_db()
+
+    session = get_session()
+    
+    try:
+        
+        seed_exercises(session)
+        
+        seed_sample_user_custom_name(session)
+    
+        # seed_multiple_demo_users(session)
+        
+        # seed_no_demo_user(session)
+        
+        print("\n" + "="*60)
+        print("DATABASE SEEDING COMPLETE!")
+        print("="*60)
+        
+    except Exception as e:
+        print(f"Error during seeding: {e}")
+        session.rollback()
+    finally:
+        session.close()
+
+
+if __name__ == "__main__":
+    seed_database()
+
