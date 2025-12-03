@@ -23,6 +23,9 @@ class User(Base):
     def get_all_workouts(self):
         return self.workouts
     
+    def get_workout_count(self):
+        return len(self.workouts)
+    
     def get_total_exercise_logged(self):
         total = 0
         for workout in self.workouts:
