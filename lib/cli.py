@@ -1,5 +1,6 @@
 
 import sys
+import os
 from datetime import date
 from lib.database import init_db, get_session
 from lib.models import User, Exercise, Workout, WorkoutExercise

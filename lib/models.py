@@ -1,16 +1,9 @@
-"""
-SQLAlchemy ORM Models for Fitness Tracker Application.
-Defines User, Workout, Exercise, and WorkoutExercise models with relationships.
-"""
 
 from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from lib.database import Base
 
-# ============================================================================
-# MODEL 1: User
-# ============================================================================
 class User(Base):
     """
     User model representing individuals using the fitness tracker.
@@ -41,7 +34,8 @@ class User(Base):
     def get_all_workouts(self):
         """
         Get all workouts for this user.
-        
+
+            
         Returns:
             list: List of Workout objects
         """
