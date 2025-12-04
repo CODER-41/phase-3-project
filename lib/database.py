@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 Base = declarative_base()
 
-DATABASE_URL = "sqlite://fitness_tracker.db"
+DATABASE_URL = "sqlite:///fitness_tracker.db"
 
 engine = create_engine(
     DATABASE_URL, 
@@ -20,6 +20,6 @@ def init_db():
     print("Database initialized sussessfully!")
 
 
-    
+
 def get_session():
     return sessionLocal()

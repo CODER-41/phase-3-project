@@ -38,7 +38,8 @@ class Workout(Base):
 
     __tablename__ = 'workouts'
 
-    id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     workout_date = Column(Date, nullable=False)
     duration = Column(Integer, nullable=True)
@@ -46,7 +47,7 @@ class Workout(Base):
     created_at = Column(DateTime, default=datetime.now)
 
 
-    user = relationship('User', back_poulates='workouts')
+    user = relationship('User', back_populates='workouts')
     workout_exercises = relationship('WorkoutExercise', back_populates='workout', cascade='all, delete-orphan')
 
 
@@ -91,7 +92,7 @@ class Exercise(Base):
     is_custom = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.now)
 
-    workout_exercies = relationship('WorkoutExercise', back_populates='exercise')
+    workout_exercises = relationship('WorkoutExercise', back_populates='exercise')
 
     def __repr__(self):
 
@@ -113,7 +114,7 @@ class Exercise(Base):
         ).all()
     
     def get_usage_count(self):
-        return len(self.workkout_exercises)
+        return len(self.workout_exercises)
 
 
 class WorkoutExercise(Base):
