@@ -1,11 +1,19 @@
+"""
+Seed data for Fitness Tracker Application.
+Populates the database with common exercises organized by muscle group.
+"""
+
 from lib.database import get_session, init_db
-from lib.models import EXercise, User, Workout, WorkoutExercise
+from lib.models import Exercise, User, Workout, WorkoutExercise  # Fixed: EXercise -> Exercise
 from datetime import date, timedelta
 
-MUSCLE_GROUPS = ('chest', 'Back', 'Legs', 'Shoulders','Arms', 'Core', 'Cardio')
+# Tuple of muscle groups (immutable - these are the standard categories)
+MUSCLE_GROUPS = ('Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Cardio')  # Fixed: 'chest' -> 'Chest'
 
+# Dictionary mapping muscle groups to exercises
+# This demonstrates use of dict data structure
 EXERCISE_DATA = {
-     'Chest': [
+    'Chest': [
         {'name': 'Bench Press', 'equipment': 'Barbell', 'description': 'Compound chest exercise'},
         {'name': 'Incline Bench Press', 'equipment': 'Barbell', 'description': 'Upper chest focus'},
         {'name': 'Dumbbell Bench Press', 'equipment': 'Dumbbells', 'description': 'Chest exercise with dumbbells'},
@@ -61,47 +69,66 @@ EXERCISE_DATA = {
 }
 
 def seed_exercises(session):
+    """
+    Populate the database with pre-defined exercises.
+    Only runs if exercises table is empty.
+    
+    Args:
+        session: SQLAlchemy session
+    """
+    # Check if exercises already exist
     existing_count = session.query(Exercise).count()
     if existing_count > 0:
-        print(f"Exercise library already populated ({existing_count} exercises)")
-        return 
+        print(f"✓ Exercise library already populated ({existing_count} exercises)")
+        return
     
     print("Seeding exercise library...")
-
-    total_exercise = 0
-
-    for muscle_group, exercise_list in EXERCISE_DATA.items():
-        for exercise_dict in exercise_list:
+    
+    # Counter for tracking inserted exercises
+    total_exercises = 0  # Fixed: total_exercise -> total_exercises
+    
+    # Iterate through the dictionary of exercises by muscle group
+    for muscle_group, exercises_list in EXERCISE_DATA.items():
+        # exercises_list is a list of dictionaries
+        for exercise_dict in exercises_list:
+            # Create new Exercise object
             exercise = Exercise(
-                name = exercise_dict['name'],
-                muscle_group = muscle_group,
-                equipment_needed = exercise_dict['equipment'],
-                description = exercise_dict['description'],
-                is_custom = False
+                name=exercise_dict['name'],
+                muscle_group=muscle_group,
+                equipment_needed=exercise_dict['equipment'],
+                description=exercise_dict['description'],
+                is_custom=False  # Pre-loaded exercises
             )
             session.add(exercise)
             total_exercises += 1
-
-        session.commit()
-        print(f"Seeded {total_exercise} exercises across {len(MUSCLE_GROUPS)} muscle groups")
+    
+    # Commit all exercises to database
+    session.commit()
+    print(f"✓ Seeded {total_exercises} exercises across {len(MUSCLE_GROUPS)} muscle groups")
 
 
 def seed_sample_user_custom_name(session):
+    """
+    Create a sample user with a CUSTOM NAME.
+    
+    Args:
+        session: SQLAlchemy session
+    """
+    # Your custom information
     custom_name = "Ronny Mboya"
     custom_age = 43
     custom_weight = 175.0
     custom_goal = "Get stronger and build lean muscle"
-
+    
+    # Check if user already exists (by name)
     existing_user = session.query(User).filter_by(name=custom_name).first()
     if existing_user:
-        print(f"User '{custom_name}' already exists")
+        print(f"✓ User '{custom_name}' already exists")
         return
     
-    print (f"creating sample user '{custom_name}' with demo workouts...")
-
-
-
+    print(f"Creating sample user '{custom_name}' with demo workouts...")
     
+    # Create the user with your custom name
     demo_user = User(
         name=custom_name,
         age=custom_age,
@@ -111,7 +138,7 @@ def seed_sample_user_custom_name(session):
     session.add(demo_user)
     session.commit()
     
-
+    # Get some exercises for demo workouts
     bench_press = session.query(Exercise).filter_by(name="Bench Press").first()
     squat = session.query(Exercise).filter_by(name="Squat").first()
     deadlift = session.query(Exercise).filter_by(name="Deadlift").first()
@@ -120,14 +147,15 @@ def seed_sample_user_custom_name(session):
         print("! Could not create demo workouts - exercises not found")
         return
     
-   
+    # Create sample workout 1 (3 days ago) - Chest Day
     workout1 = Workout(
         user=demo_user,
         workout_date=date.today() - timedelta(days=3),
         notes="Great chest day! Felt really strong on bench press."
     )
     session.add(workout1)
-  
+    
+    # Add exercises to workout 1
     we1 = WorkoutExercise(
         workout=workout1,
         exercise=bench_press,
@@ -137,14 +165,16 @@ def seed_sample_user_custom_name(session):
         notes="Added 5 lbs from last session"
     )
     session.add(we1)
-  
+    
+    # Create sample workout 2 (1 day ago) - Leg Day
     workout2 = Workout(
         user=demo_user,
         workout_date=date.today() - timedelta(days=1),
         notes="Leg day - tough but productive"
     )
     session.add(workout2)
-
+    
+    # Add exercises to workout 2
     we2 = WorkoutExercise(
         workout=workout2,
         exercise=squat,
@@ -165,11 +195,17 @@ def seed_sample_user_custom_name(session):
     session.add(we3)
     
     session.commit()
-    print(f" Created user '{demo_user.name}' with 2 sample workouts")
+    print(f"✓ Created user '{demo_user.name}' with 2 sample workouts")
 
 
 def seed_multiple_demo_users(session):
- 
+    """
+    Create MULTIPLE sample users to show variety.
+    
+    Args:
+        session: SQLAlchemy session
+    """
+    # List of demo users with different profiles (demonstrates use of list)
     demo_users_data = [
         {
             'name': 'Sarah Johnson',
@@ -194,13 +230,13 @@ def seed_multiple_demo_users(session):
     print(f"Creating {len(demo_users_data)} sample users...")
     
     for user_data in demo_users_data:
-
+        # Check if user already exists
         existing = session.query(User).filter_by(name=user_data['name']).first()
         if existing:
-            print(f" User '{user_data['name']}' already exists")
+            print(f"✓ User '{user_data['name']}' already exists")
             continue
         
-    
+        # Create new user
         new_user = User(
             name=user_data['name'],
             age=user_data['age'],
@@ -208,31 +244,46 @@ def seed_multiple_demo_users(session):
             fitness_goal=user_data['goal']
         )
         session.add(new_user)
-        print(f"  Created user: {user_data['name']}")
+        print(f"  • Created user: {user_data['name']}")
     
     session.commit()
-    print(f" Multiple demo users created successfully")
+    print(f"✓ Multiple demo users created successfully")
+
 
 def seed_no_demo_user(session):
-   
-    print(" Skipping demo user creation - database will be empty")
+    """
+    Don't create any demo users.
+    Use this if you want a completely empty database.
+    
+    Args:
+        session: SQLAlchemy session
+    """
+    print("✓ Skipping demo user creation - database will be empty")
     print("  Users can create their own accounts from the CLI")
+    # This function intentionally does nothing - just for clarity
 
 
 def seed_database():
-    
+    """
+    Main seeding function - initializes database and populates with data.
+    """
+    # Initialize database tables
     init_db()
-
+    
+    # Get database session
     session = get_session()
     
     try:
-        
+        # ALWAYS seed exercises (required for app to work)
         seed_exercises(session)
         
+        # Create demo user with your name
         seed_sample_user_custom_name(session)
-    
+        
+        # Optional: Create multiple demo users (commented out)
         # seed_multiple_demo_users(session)
         
+        # Optional: Skip demo user creation (commented out)
         # seed_no_demo_user(session)
         
         print("\n" + "="*60)
@@ -246,6 +297,6 @@ def seed_database():
         session.close()
 
 
+# Run seeding if this file is executed directly
 if __name__ == "__main__":
     seed_database()
-

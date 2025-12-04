@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from lib.models import user, EXercise, Workout, WorkoutExercise
+from lib.models import User, Exercise, Workout, WorkoutExercise
 
 def clear_screen():
     print("\n" * 50)
