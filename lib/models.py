@@ -5,26 +5,18 @@ from datetime import datetime
 from lib.database import Base
 
 class User(Base):
-    """
-    User model representing individuals using the fitness tracker.
     
-    Relationships:
-        - Has many Workouts (one-to-many)
-    """
     __tablename__ = 'users'
-    
-    # Primary key - unique identifier for each user
+
     id = Column(Integer, primary_key=True)
+
+    name = Column(String(100), nullable=False) 
+    age = Column(Integer, nullable=True)  
+    weight = Column(Float, nullable=True)  
+    fitness_goal = Column(String(200), nullable=True) 
+    created_at = Column(DateTime, default=datetime.now) 
     
-    # User information fields
-    name = Column(String(100), nullable=False)  # User's full name (required)
-    age = Column(Integer, nullable=True)  # Optional age
-    weight = Column(Float, nullable=True)  # Optional weight in lbs/kg
-    fitness_goal = Column(String(200), nullable=True)  # e.g., "Build muscle", "Lose weight"
-    created_at = Column(DateTime, default=datetime.now)  # Account creation timestamp
-    
-    # Relationship: One user has many workouts
-    # cascade='all, delete-orphan' means when a user is deleted, all their workouts are too
+  
     workouts = relationship('Workout', back_populates='user', cascade='all, delete-orphan')
     
     def __repr__(self):
