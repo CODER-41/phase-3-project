@@ -514,13 +514,13 @@ def add_custom_exercise(session):
     description = input("  Description (optional, press Enter to skip): ").strip()
     description = description if description else None
     
-    # Create new exercise
+
     new_exercise = Exercise(
         name=name,
         muscle_group=muscle_group,
         equipment_needed=equipment,
         description=description,
-        is_custom=True  # Mark as custom exercise
+        is_custom=True 
     )
     
     session.add(new_exercise)
@@ -528,49 +528,31 @@ def add_custom_exercise(session):
     
     print(f"\n✓ Custom exercise '{name}' added successfully!")
 
-# ============================================================================
-# MAIN MENU FUNCTION
-# ============================================================================
+
 
 def main_menu():
-    """
-    Display main menu and handle user input.
-    This is the main loop of the application.
-    
-    Flow:
-        1. Initialize database
-        2. Offer to seed if empty
-        3. Display menu
-        4. Handle user selection
-        5. Repeat until user exits
-    """
-    # Initialize database and seed if needed
+  
     print("Initializing Fitness Tracker...")
     init_db()
     
-    # Get database session
     session = get_session()
     
-    # Check if database is empty and offer to seed
     exercise_count = session.query(Exercise).count()
     if exercise_count == 0:
         print("\n! Exercise library is empty.")
         if confirm_action("Would you like to populate it with default exercises?"):
             seed_database()
-    
-    # Main application loop
+
     while True:
-        # Display header
+    
         print_header("FITNESS TRACKER & WORKOUT PLANNER")
-        
-        # Display current user status
+    
         if current_user:
             print(f"\n  Current User: {current_user.name}")
             print(f"  Workouts Logged: {current_user.get_workout_count()}")
         else:
             print("\n  No user selected - Please create or select a user")
         
-        # Display menu options
         print("\n  MAIN MENU:")
         print("  1. User Management (Create/Switch User)")
         print("  2. Log New Workout")
@@ -580,11 +562,9 @@ def main_menu():
         print("  6. Search Exercise Library")
         print("  7. Add Custom Exercise")
         print("  0. Exit")
-        
-        # Get user choice
+    
         choice = input("\n  Enter your choice: ").strip()
         
-        # Handle menu selection
         if choice == '1':
             user_management_menu(session)
         elif choice == '2':
@@ -600,7 +580,7 @@ def main_menu():
         elif choice == '7':
             add_custom_exercise(session)
         elif choice == '0':
-            # Exit application
+
             print("\n" + "="*60)
             print("  Thank you for using Fitness Tracker!")
             print("  Keep pushing your limits! ")
@@ -608,9 +588,8 @@ def main_menu():
             session.close()
             sys.exit(0)
         else:
-            print("\n✗ Invalid choice. Please enter a number from the menu.")
-        
-        # Pause before showing menu again
+            print("\n Invalid choice. Please enter a number from the menu.")
+    
         input("\n  Press Enter to return to main menu...")
 
 # ============================================================================
