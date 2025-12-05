@@ -119,32 +119,20 @@ class Exercise(Base):
         
         return len(self.workout_exercises)
 
-# ============================================================================
-# MODEL 4: WorkoutExercise (Association/Join Table with Extra Data)
-# ============================================================================
+
 class WorkoutExercise(Base):
-    """
-    WorkoutExercise model - join table between Workout and Exercise.
-    This table also stores workout-specific data (sets, reps, weight).
     
-    Relationships:
-        - Belongs to one Workout (many-to-one)
-        - Belongs to one Exercise (many-to-one)
-    """
     __tablename__ = 'workout_exercises'
     
-    # Primary key
     id = Column(Integer, primary_key=True)
     
-    # Foreign keys
     workout_id = Column(Integer, ForeignKey('workouts.id'), nullable=False)
     exercise_id = Column(Integer, ForeignKey('exercises.id'), nullable=False)
     
-    # Exercise performance data
-    sets = Column(Integer, nullable=False)  # Number of sets performed
-    reps = Column(Integer, nullable=False)  # Number of reps per set
-    weight = Column(Float, nullable=False)  # Weight used in lbs/kg
-    notes = Column(Text, nullable=True)  # Optional notes
+    sets = Column(Integer, nullable=False)  
+    reps = Column(Integer, nullable=False)  
+    weight = Column(Float, nullable=False)
+    notes = Column(Text, nullable=True) 
     created_at = Column(DateTime, default=datetime.now)
     
     # Relationships
@@ -152,7 +140,7 @@ class WorkoutExercise(Base):
     exercise = relationship('Exercise', back_populates='workout_exercises')
     
     def __repr__(self):
-        """String representation of WorkoutExercise object"""
+
         return f"<WorkoutExercise(id={self.id}, exercise='{self.get_exercise_name()}', {self.sets}x{self.reps}@{self.weight}lbs)>"
     
     def calculate_volume(self):
