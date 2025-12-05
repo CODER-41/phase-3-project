@@ -378,15 +378,14 @@ def view_statistics(session):
             exercise_name = we.get_exercise_name()
             exercise_count[exercise_name] = exercise_count.get(exercise_name, 0) + 1
     
-    # Sort exercises by frequency (most to least)
-    # Demonstrates sorted() with dict.items() and lambda
+   
     sorted_exercises = sorted(
         exercise_count.items(),
         key=lambda x: x[1],
         reverse=True
     )
     
-    # Display statistics
+
     print("\n" + "="*60)
     print("  OVERALL STATISTICS")
     print("="*60)
@@ -398,25 +397,16 @@ def view_statistics(session):
     print(f"  Days Active: {days_active}")
     print(f"  Workout Frequency: {workouts_per_week:.1f} workouts/week")
     
-    # Display most trained exercises (top 5)
     print("\n  Most Frequently Trained Exercises:")
     for idx, (exercise_name, count) in enumerate(sorted_exercises[:5], 1):
         print(f"    {idx}. {exercise_name}: {count} sessions")
     
     input("\n  Press Enter to continue...")
 
-# ============================================================================
-# EXERCISE LIBRARY FUNCTIONS
-# ============================================================================
+
 
 def search_exercises(session):
-    """
-    Search for exercises in the library.
-    Provides multiple search options: by name, muscle group, or view all.
-    
-    Args:
-        session: SQLAlchemy session
-    """
+ 
     print_subheader("Search Exercise Library")
     
     print("\n  Search Options:")
@@ -428,7 +418,7 @@ def search_exercises(session):
     choice = input("\n  Enter choice: ").strip()
     
     if choice == '1':
-        # Search by name
+        
         search_term = input("\n  Enter search term: ").strip()
         if not search_term:
             print("✗ Search term cannot be empty.")
@@ -438,7 +428,7 @@ def search_exercises(session):
         display_exercise_list(exercises)
         
     elif choice == '2':
-        # Browse by muscle group
+    
         muscle_groups = ('Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Cardio')
         
         print("\n  Select Muscle Group:")
@@ -456,7 +446,7 @@ def search_exercises(session):
         display_exercise_list(exercises)
         
     elif choice == '3':
-        # View all exercises
+
         exercises = session.query(Exercise).order_by(
             Exercise.muscle_group, Exercise.name
         ).all()
@@ -464,8 +454,7 @@ def search_exercises(session):
         if not exercises:
             print("\n  No exercises in library.")
             return
-        
-        # Group exercises by muscle group using dictionary
+    
         exercises_by_group = {}
         for exercise in exercises:
             mg = exercise.muscle_group
