@@ -462,7 +462,7 @@ def search_exercises(session):
                 exercises_by_group[mg] = []
             exercises_by_group[mg].append(exercise)
         
-        # Display grouped exercises
+        
         print(f"\n  Total Exercises: {len(exercises)}\n")
         for muscle_group, exercise_list in exercises_by_group.items():
             print(f"\n  === {muscle_group} ({len(exercise_list)} exercises) ===")
@@ -474,34 +474,26 @@ def search_exercises(session):
     elif choice == '0':
         return
     else:
-        print("✗ Invalid choice.")
+        print(" Invalid choice.")
         return
     
     input("\n  Press Enter to continue...")
 
 def add_custom_exercise(session):
-    """
-    Add a custom exercise to the library.
-    Allows users to add exercises not in the pre-loaded list.
     
-    Args:
-        session: SQLAlchemy session
-    """
     print_subheader("Add Custom Exercise")
     
-    # Get exercise details
+    
     name = input("\n  Exercise name: ").strip()
     if not name:
-        print("✗ Exercise name cannot be empty.")
+        print(" Exercise name cannot be empty.")
         return
     
-    # Check if exercise already exists (demonstrates query with filter)
     existing = session.query(Exercise).filter_by(name=name).first()
     if existing:
-        print(f"✗ Exercise '{name}' already exists in the library.")
+        print(f" Exercise '{name}' already exists in the library.")
         return
     
-    # Select muscle group
     muscle_groups = ('Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Cardio', 'Other')
     
     print("\n  Select Muscle Group:")
@@ -516,7 +508,6 @@ def add_custom_exercise(session):
     
     muscle_group = muscle_groups[mg_choice - 1]
     
-    # Optional fields
     equipment = input("\n  Equipment needed (optional, press Enter to skip): ").strip()
     equipment = equipment if equipment else None
     
