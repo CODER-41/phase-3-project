@@ -300,15 +300,14 @@ def view_exercise_history(session):
         print(f"\n  No exercises found matching '{search_term}'")
         return
     
-    # Display and let user select
+    
     display_exercise_list(exercises)
     exercise = get_exercise_choice(session, exercises)
     
     if not exercise:
         return
     
-    # Query all workout exercises for this user and exercise
-    # Demonstrates joining tables and filtering
+
     workout_exercises = session.query(WorkoutExercise).join(
         Workout
     ).filter(
@@ -322,18 +321,16 @@ def view_exercise_history(session):
         print(f"\n  No history found for {exercise.name}")
         return
     
-    # Display exercise history
     print("\n" + "="*60)
     print(f"  EXERCISE HISTORY: {exercise.name}")
     print("="*60)
     print(f"\n  Total Sessions: {len(workout_exercises)}")
     
-    # Calculate personal record (highest weight)
-    # Demonstrates list comprehension
+
     max_weight = max([we.weight for we in workout_exercises])
     print(f"  Personal Record: {max_weight} lbs")
     
-    # Display each session
+    
     print("\n  Session History:")
     for idx, we in enumerate(workout_exercises, 1):
         print(f"\n  {idx}. Date: {we.workout.workout_date}")
@@ -343,10 +340,6 @@ def view_exercise_history(session):
             print(f"     Notes: {we.notes}")
     
     input("\n  Press Enter to continue...")
-
-# ============================================================================
-# STATISTICS FUNCTIONS
-# ============================================================================
 
 def view_statistics(session):
     """
@@ -640,7 +633,7 @@ def main_menu():
             # Exit application
             print("\n" + "="*60)
             print("  Thank you for using Fitness Tracker!")
-            print("  Keep pushing your limits! 💪")
+            print("  Keep pushing your limits! ")
             print("="*60 + "\n")
             session.close()
             sys.exit(0)

@@ -1,5 +1,5 @@
 ## Fitness Tracker & Workout Planner
-A cols -Rmprehensive command-line interface (CLI) application for tracking workouts, exercises, and fitness progress using Python and SQLALchemy ORM.
+A comprehensive command-line interface (CLI) application for tracking workouts, exercises, and fitness progress using Python and SQLALchemy ORM.
 
 ## Table of Contents
 - [Features]
