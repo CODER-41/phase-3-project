@@ -20,35 +20,19 @@ class User(Base):
     workouts = relationship('Workout', back_populates='user', cascade='all, delete-orphan')
     
     def __repr__(self):
-        """String representation of User object for debugging"""
+
         return f"<User(id={self.id}, name='{self.name}', goal='{self.fitness_goal}')>"
     
     def get_all_workouts(self):
-        """
-        Get all workouts for this user.
-
-            
-        Returns:
-            list: List of Workout objects
-        """
+       
         return self.workouts
     
     def get_workout_count(self):
-        """
-        Count total number of workouts logged by this user.
-        
-        Returns:
-            int: Total workout count
-        """
+       
         return len(self.workouts)
     
     def get_total_exercises_logged(self):
-        """
-        Count total number of exercises logged across all workouts.
-        
-        Returns:
-            int: Total exercise count
-        """
+     
         total = 0
         for workout in self.workouts:
             total += len(workout.workout_exercises)
