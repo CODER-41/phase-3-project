@@ -103,8 +103,8 @@ def seed_sample_user_custom_name(session):
         print(f" User '{custom_name}' already exists")
         return
     
-    print(f"Creating sample user '{custom_name}' with demo workouts..."
-          
+    print(f"Creating sample user '{custom_name}' with demo workouts...")
+
     demo_user = User(
         name=custom_name,
         age=custom_age,
@@ -113,8 +113,7 @@ def seed_sample_user_custom_name(session):
     )
     session.add(demo_user)
     session.commit()
-    
-    # Get some exercises for demo workouts
+
     bench_press = session.query(Exercise).filter_by(name="Bench Press").first()
     squat = session.query(Exercise).filter_by(name="Squat").first()
     deadlift = session.query(Exercise).filter_by(name="Deadlift").first()
@@ -123,15 +122,14 @@ def seed_sample_user_custom_name(session):
         print("! Could not create demo workouts - exercises not found")
         return
     
-    # Create sample workout 1 (3 days ago) - Chest Day
+
     workout1 = Workout(
         user=demo_user,
         workout_date=date.today() - timedelta(days=3),
         notes="Great chest day! Felt really strong on bench press."
     )
     session.add(workout1)
-    
-    # Add exercises to workout 1
+
     we1 = WorkoutExercise(
         workout=workout1,
         exercise=bench_press,
@@ -142,7 +140,7 @@ def seed_sample_user_custom_name(session):
     )
     session.add(we1)
     
-    # Create sample workout 2 (1 day ago) - Leg Day
+    
     workout2 = Workout(
         user=demo_user,
         workout_date=date.today() - timedelta(days=1),
@@ -150,7 +148,6 @@ def seed_sample_user_custom_name(session):
     )
     session.add(workout2)
     
-    # Add exercises to workout 2
     we2 = WorkoutExercise(
         workout=workout2,
         exercise=squat,
@@ -171,17 +168,11 @@ def seed_sample_user_custom_name(session):
     session.add(we3)
     
     session.commit()
-    print(f"✓ Created user '{demo_user.name}' with 2 sample workouts")
+    print(f" Created user '{demo_user.name}' with 2 sample workouts")
 
 
 def seed_multiple_demo_users(session):
-    """
-    Create MULTIPLE sample users to show variety.
-    
-    Args:
-        session: SQLAlchemy session
-    """
-    # List of demo users with different profiles (demonstrates use of list)
+   
     demo_users_data = [
         {
             'name': 'Sarah Johnson',
@@ -206,13 +197,13 @@ def seed_multiple_demo_users(session):
     print(f"Creating {len(demo_users_data)} sample users...")
     
     for user_data in demo_users_data:
-        # Check if user already exists
+    
         existing = session.query(User).filter_by(name=user_data['name']).first()
         if existing:
-            print(f"✓ User '{user_data['name']}' already exists")
+            print(f" User '{user_data['name']}' already exists")
             continue
         
-        # Create new user
+    
         new_user = User(
             name=user_data['name'],
             age=user_data['age'],
