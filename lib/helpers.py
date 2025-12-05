@@ -115,7 +115,7 @@ def get_exercise_choice(session, exercises):
             else:
                 print(f"Please enter a number between 1 and {len(exercises)}")
         except ValueError:
-            print("✗ Invalid input. Please enter a number.")
+            print(" Invalid input. Please enter a number.")
 
 def confirm_action(prompt="Are you sure?"):
   
