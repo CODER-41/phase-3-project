@@ -38,53 +38,28 @@ class User(Base):
             total += len(workout.workout_exercises)
         return total
 
-# ============================================================================
-# MODEL 2: Workout
-# ============================================================================
 class Workout(Base):
-    """
-    Workout model representing a single workout session.
-    
-    Relationships:
-        - Belongs to one User (many-to-one)
-        - Has many WorkoutExercises (one-to-many)
-    """
+   
     __tablename__ = 'workouts'
-    
-    # Primary key
+
     id = Column(Integer, primary_key=True)
     
-    # Foreign key to User table
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     
-    # Workout information fields
-    workout_date = Column(Date, nullable=False)  # Date of workout
-    duration = Column(Integer, nullable=True)  # Duration in minutes (optional)
-    notes = Column(Text, nullable=True)  # Optional notes about the workout
-    created_at = Column(DateTime, default=datetime.now)  # Record creation timestamp
-    
-    # Relationships
-    user = relationship('User', back_populates='workouts')  # Many workouts belong to one user
+    workout_date = Column(Date, nullable=False)  
+    duration = Column(Integer, nullable=True) 
+    notes = Column(Text, nullable=True)  
+    created_at = Column(DateTime, default=datetime.now)  
+
+    user = relationship('User', back_populates='workouts')  
     workout_exercises = relationship('WorkoutExercise', back_populates='workout', cascade='all, delete-orphan')
     
     def __repr__(self):
-        """String representation of Workout object"""
+    
         return f"<Workout(id={self.id}, user_id={self.user_id}, date={self.workout_date})>"
     
     def add_exercise(self, exercise, sets, reps, weight, notes=None):
-        """
-        Add an exercise to this workout session.
-        
-        Args:
-            exercise (Exercise): Exercise object to add
-            sets (int): Number of sets performed
-            reps (int): Number of reps per set
-            weight (float): Weight used in lbs/kg
-            notes (str, optional): Additional notes
-            
-        Returns:
-            WorkoutExercise: The created WorkoutExercise object
-        """
+    
         workout_exercise = WorkoutExercise(
             workout=self,
             exercise=exercise,
