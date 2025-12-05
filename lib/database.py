@@ -7,7 +7,7 @@ DATABASE_URL = "sqlite:///fitness_tracker.db"
 
 engine = create_engine(
     DATABASE_URL, 
-    echo=True,
+    echo=False,
     connect_args = {"check_same_thread": False}
 )
 
