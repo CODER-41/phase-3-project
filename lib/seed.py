@@ -1,17 +1,12 @@
-"""
-Seed data for Fitness Tracker Application.
-Populates the database with common exercises organized by muscle group.
-"""
+
 
 from lib.database import get_session, init_db
-from lib.models import Exercise, User, Workout, WorkoutExercise  # Fixed: EXercise -> Exercise
+from lib.models import Exercise, User, Workout, WorkoutExercise  
 from datetime import date, timedelta
 
-# Tuple of muscle groups (immutable - these are the standard categories)
-MUSCLE_GROUPS = ('Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Cardio')  # Fixed: 'chest' -> 'Chest'
+MUSCLE_GROUPS = ('Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Cardio')  
 
-# Dictionary mapping muscle groups to exercises
-# This demonstrates use of dict data structure
+
 EXERCISE_DATA = {
     'Chest': [
         {'name': 'Bench Press', 'equipment': 'Barbell', 'description': 'Compound chest exercise'},
