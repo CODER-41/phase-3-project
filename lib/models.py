@@ -81,75 +81,42 @@ class Workout(Base):
             total_volume += we.calculate_volume()
         return total_volume
 
-# ============================================================================
-# MODEL 3: Exercise
-# ============================================================================
 class Exercise(Base):
-    """
-    Exercise model representing exercise types in the library.
-    
-    Relationships:
-        - Has many WorkoutExercises (one-to-many)
-    """
+
     __tablename__ = 'exercises'
     
-    # Primary key
     id = Column(Integer, primary_key=True)
     
-    # Exercise information fields
-    name = Column(String(100), nullable=False, unique=True)  # Exercise name (must be unique)
-    muscle_group = Column(String(50), nullable=False)  # e.g., "Chest", "Back", "Legs"
-    equipment_needed = Column(String(100), nullable=True)  # e.g., "Barbell", "Dumbbells"
-    description = Column(Text, nullable=True)  # Optional exercise description
-    is_custom = Column(Boolean, default=False)  # True if user-created, False if pre-loaded
+
+    name = Column(String(100), nullable=False, unique=True)  
+    muscle_group = Column(String(50), nullable=False)  
+    equipment_needed = Column(String(100), nullable=True)  
+    description = Column(Text, nullable=True)  
+    is_custom = Column(Boolean, default=False)  
     created_at = Column(DateTime, default=datetime.now)
     
-    # Relationship: One exercise can be used in many workouts
+    
     workout_exercises = relationship('WorkoutExercise', back_populates='exercise')
     
     def __repr__(self):
-        """String representation of Exercise object"""
         return f"<Exercise(id={self.id}, name='{self.name}', muscle_group='{self.muscle_group}')>"
     
     @classmethod
     def search_by_name(cls, session, search_term):
-        """
-        Search for exercises by name (case-insensitive, partial match).
         
-        Args:
-            session: SQLAlchemy session
-            search_term (str): Search query
-            
-        Returns:
-            list: List of matching Exercise objects
-        """
         return session.query(cls).filter(
             cls.name.ilike(f"%{search_term}%")
         ).all()
     
     @classmethod
     def filter_by_muscle_group(cls, session, muscle_group):
-        """
-        Filter exercises by muscle group.
-        
-        Args:
-            session: SQLAlchemy session
-            muscle_group (str): Muscle group to filter by
-            
-        Returns:
-            list: List of Exercise objects in that muscle group
-        """
+       
         return session.query(cls).filter(
             cls.muscle_group == muscle_group
         ).all()
     
     def get_usage_count(self):
-        """
-        Count how many times this exercise has been logged.
         
-        Returns:
-            int: Number of times exercise has been used
-        """
         return len(self.workout_exercises)
 
 # ============================================================================
