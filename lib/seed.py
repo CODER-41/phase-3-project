@@ -214,44 +214,27 @@ def seed_multiple_demo_users(session):
         print(f"  • Created user: {user_data['name']}")
     
     session.commit()
-    print(f"✓ Multiple demo users created successfully")
+    print(f" Multiple demo users created successfully")
 
 
 def seed_no_demo_user(session):
-    """
-    Don't create any demo users.
-    Use this if you want a completely empty database.
     
-    Args:
-        session: SQLAlchemy session
-    """
-    print("✓ Skipping demo user creation - database will be empty")
+    print(" Skipping demo user creation - database will be empty")
     print("  Users can create their own accounts from the CLI")
-    # This function intentionally does nothing - just for clarity
 
 
 def seed_database():
-    """
-    Main seeding function - initializes database and populates with data.
-    """
-    # Initialize database tables
+   
     init_db()
-    
-    # Get database session
+
     session = get_session()
     
     try:
-        # ALWAYS seed exercises (required for app to work)
+        
         seed_exercises(session)
         
-        # Create demo user with your name
+    
         seed_sample_user_custom_name(session)
-        
-        # Optional: Create multiple demo users (commented out)
-        # seed_multiple_demo_users(session)
-        
-        # Optional: Skip demo user creation (commented out)
-        # seed_no_demo_user(session)
         
         print("\n" + "="*60)
         print("DATABASE SEEDING COMPLETE!")
@@ -263,7 +246,5 @@ def seed_database():
     finally:
         session.close()
 
-
-# Run seeding if this file is executed directly
 if __name__ == "__main__":
     seed_database()
