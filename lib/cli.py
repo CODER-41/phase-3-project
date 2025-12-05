@@ -271,7 +271,7 @@ def view_workout_history(session):
 
     for idx, workout in enumerate(sorted_workouts, 1):
         print("\n" + "="*60)
-        print(f"  WORKOUT #{idx}")
+        print(f"  WORKOUT {idx}")
         print("="*60)
         print(format_workout_summary(workout))
         
@@ -291,7 +291,7 @@ def view_exercise_history(session):
     search_term = input("\n  Search exercise by name: ").strip()
     
     if not search_term:
-        print("✗ Search term cannot be empty.")
+        print(" Search term cannot be empty.")
         return
 
     exercises = Exercise.search_by_name(session, search_term)
@@ -421,7 +421,7 @@ def search_exercises(session):
         
         search_term = input("\n  Enter search term: ").strip()
         if not search_term:
-            print("✗ Search term cannot be empty.")
+            print(" Search term cannot be empty.")
             return
         
         exercises = Exercise.search_by_name(session, search_term)
@@ -526,7 +526,7 @@ def add_custom_exercise(session):
     session.add(new_exercise)
     session.commit()
     
-    print(f"\n✓ Custom exercise '{name}' added successfully!")
+    print(f"\n Custom exercise '{name}' added successfully!")
 
 
 
@@ -604,7 +604,7 @@ if __name__ == "__main__":
         sys.exit(0)
     except Exception as e:
     
-        print(f"\n✗ An error occurred: {e}")
+        print(f"\n An error occurred: {e}")
         print("  Please report this issue if it persists.\n")
         sys.exit(1)
 
