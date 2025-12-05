@@ -342,16 +342,9 @@ def view_exercise_history(session):
     input("\n  Press Enter to continue...")
 
 def view_statistics(session):
-    """
-    Display workout statistics for current user.
-    Shows totals, averages, and most trained exercises.
     
-    Args:
-        session: SQLAlchemy session
-    """
-    # Check if user is logged in
     if not current_user:
-        print("\n✗ Please select or create a user first!")
+        print("\n Please select or create a user first!")
         return
     
     print_subheader(f"Statistics - {current_user.name}")
@@ -362,26 +355,23 @@ def view_statistics(session):
         print("\n  No workout data available yet.")
         return
     
-    # Calculate various statistics
+
     total_workouts = len(workouts)
     total_exercises = current_user.get_total_exercises_logged()
-    
-    # Calculate total volume across all workouts
-    # Demonstrates list comprehension and sum()
+
     total_volume = sum([workout.get_total_volume() for workout in workouts])
     
-    # Get date range
     workout_dates = [w.workout_date for w in workouts]
     earliest_workout = min(workout_dates)
     latest_workout = max(workout_dates)
     
-    # Calculate workout frequency (workouts per week)
+
     days_active = (latest_workout - earliest_workout).days + 1
     weeks_active = days_active / 7
     workouts_per_week = total_workouts / weeks_active if weeks_active > 0 else 0
     
-    # Find most frequently trained exercises
-    # Demonstrates dictionary usage for counting
+
+
     exercise_count = {}
     for workout in workouts:
         for we in workout.workout_exercises:
