@@ -64,66 +64,47 @@ EXERCISE_DATA = {
 }
 
 def seed_exercises(session):
-    """
-    Populate the database with pre-defined exercises.
-    Only runs if exercises table is empty.
     
-    Args:
-        session: SQLAlchemy session
-    """
-    # Check if exercises already exist
     existing_count = session.query(Exercise).count()
     if existing_count > 0:
-        print(f"✓ Exercise library already populated ({existing_count} exercises)")
+        print(f" Exercise library already populated ({existing_count} exercises)")
         return
     
     print("Seeding exercise library...")
     
-    # Counter for tracking inserted exercises
-    total_exercises = 0  # Fixed: total_exercise -> total_exercises
+    total_exercises = 0  
     
-    # Iterate through the dictionary of exercises by muscle group
+
     for muscle_group, exercises_list in EXERCISE_DATA.items():
-        # exercises_list is a list of dictionaries
         for exercise_dict in exercises_list:
-            # Create new Exercise object
             exercise = Exercise(
                 name=exercise_dict['name'],
                 muscle_group=muscle_group,
                 equipment_needed=exercise_dict['equipment'],
                 description=exercise_dict['description'],
-                is_custom=False  # Pre-loaded exercises
+                is_custom=False 
             )
             session.add(exercise)
             total_exercises += 1
-    
-    # Commit all exercises to database
+
     session.commit()
-    print(f"✓ Seeded {total_exercises} exercises across {len(MUSCLE_GROUPS)} muscle groups")
+    print(f" Seeded {total_exercises} exercises across {len(MUSCLE_GROUPS)} muscle groups")
 
 
 def seed_sample_user_custom_name(session):
-    """
-    Create a sample user with a CUSTOM NAME.
-    
-    Args:
-        session: SQLAlchemy session
-    """
-    # Your custom information
+   
     custom_name = "Ronny Mboya"
     custom_age = 43
     custom_weight = 175.0
     custom_goal = "Get stronger and build lean muscle"
     
-    # Check if user already exists (by name)
     existing_user = session.query(User).filter_by(name=custom_name).first()
     if existing_user:
-        print(f"✓ User '{custom_name}' already exists")
+        print(f" User '{custom_name}' already exists")
         return
     
-    print(f"Creating sample user '{custom_name}' with demo workouts...")
-    
-    # Create the user with your custom name
+    print(f"Creating sample user '{custom_name}' with demo workouts..."
+          
     demo_user = User(
         name=custom_name,
         age=custom_age,
