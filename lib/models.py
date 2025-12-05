@@ -71,21 +71,11 @@ class Workout(Base):
         return workout_exercise
     
     def get_all_exercises(self):
-        """
-        Get all exercises in this workout.
-        
-        Returns:
-            list: List of WorkoutExercise objects
-        """
+     
         return self.workout_exercises
     
     def get_total_volume(self):
-        """
-        Calculate total volume (sets × reps × weight) for entire workout.
-        
-        Returns:
-            float: Total volume lifted
-        """
+      
         total_volume = 0
         for we in self.workout_exercises:
             total_volume += we.calculate_volume()
