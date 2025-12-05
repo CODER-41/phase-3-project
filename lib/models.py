@@ -135,7 +135,7 @@ class WorkoutExercise(Base):
     notes = Column(Text, nullable=True) 
     created_at = Column(DateTime, default=datetime.now)
     
-    # Relationships
+
     workout = relationship('Workout', back_populates='workout_exercises')
     exercise = relationship('Exercise', back_populates='workout_exercises')
     
@@ -144,21 +144,11 @@ class WorkoutExercise(Base):
         return f"<WorkoutExercise(id={self.id}, exercise='{self.get_exercise_name()}', {self.sets}x{self.reps}@{self.weight}lbs)>"
     
     def calculate_volume(self):
-        """
-        Calculate total volume (sets × reps × weight) for this exercise.
-        
-        Returns:
-            float: Volume lifted
-        """
+       
         return self.sets * self.reps * self.weight
     
     def get_exercise_name(self):
-        """
-        Get the name of the exercise.
-        
-        Returns:
-            str: Exercise name
-        """
+     
         return self.exercise.name if self.exercise else "Unknown"
 
 
