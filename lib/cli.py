@@ -216,7 +216,7 @@ def log_workout(session):
     print("  WORKOUT SUMMARY")
     print("="*60)
     print(format_workout_summary(workout))
-    print(f"\n✓ Workout logged successfully! (ID: {workout.id})")
+    print(f"\n Workout logged successfully! (ID: {workout.id})")
 
 def browse_exercises_by_muscle_group(session):
   
@@ -467,7 +467,7 @@ def search_exercises(session):
         for muscle_group, exercise_list in exercises_by_group.items():
             print(f"\n  === {muscle_group} ({len(exercise_list)} exercises) ===")
             for exercise in exercise_list:
-                print(f"    • {exercise.name}")
+                print(f"     {exercise.name}")
                 if exercise.equipment_needed:
                     print(f"      Equipment: {exercise.equipment_needed}")
     
@@ -592,28 +592,18 @@ def main_menu():
     
         input("\n  Press Enter to return to main menu...")
 
-# ============================================================================
-# APPLICATION ENTRY POINT
-# ============================================================================
+
 
 if __name__ == "__main__":
-    """
-    Entry point for the Fitness Tracker CLI application.
-    Run this file to start the application: python lib/cli.py
-    
-    Handles:
-        - Normal execution flow
-        - Keyboard interrupt (Ctrl+C)
-        - Unexpected errors
-    """
+ 
     try:
         main_menu()
     except KeyboardInterrupt:
-        # Handle Ctrl+C gracefully
+        
         print("\n\n  Application interrupted by user. Goodbye! 👋\n")
         sys.exit(0)
     except Exception as e:
-        # Handle unexpected errors
+    
         print(f"\n✗ An error occurred: {e}")
         print("  Please report this issue if it persists.\n")
         sys.exit(1)
